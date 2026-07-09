@@ -1,0 +1,24 @@
+<launch>
+  <!-- 接收 arm_type 和 end_effector 参数 -->
+  <arg name="arm_type" default="rm65" />
+  <arg name="end_effector" default="rmg24" />
+  <arg name="real_arm" default="false" />
+  <param name="debug_real_arm" value="$(arg real_arm)" />
+  <!-- Define the MoveIt controller manager plugin to use for trajectory execution -->
+  <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager" />
+
+  <!-- Load controller list to the parameter server -->
+  <!-- <rosparam file="$(find embodied_moveit)/config/moveit_controllers_$(arg arm_type)_$(arg end_effector).yaml" /> -->
+<!-- Load controller list based on conditions -->
+<group if="$(arg real_arm)">
+  <group if="$(eval arg('end_effector') == 'rmg24')">
+    <rosparam file="$(find embodied_moveit)/config/moveit_controllers_$(arg arm_type)_$(arg end_effector)_real.yaml" />
+  </group>
+  <group unless="$(eval arg('end_effector') == 'rmg24')">
+    <rosparam file="$(find embodied_moveit)/config/moveit_controllers_$(arg arm_type)_$(arg end_effector).yaml" />
+  </group>
+</group>
+<group unless="$(arg real_arm)">
+  <rosparam file="$(find embodied_moveit)/config/moveit_controllers_$(arg arm_type)_$(arg end_effector).yaml" />
+</group>
+</launch>

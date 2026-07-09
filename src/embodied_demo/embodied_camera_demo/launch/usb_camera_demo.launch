@@ -1,0 +1,12 @@
+    
+<launch>
+    <arg name="idx" default="2"/>
+
+    <include file="$(find embodied_camera)/launch/usb_camera_pub.launch" />
+
+    <!-- 根据idx参数确定订阅那个usb相机的数据 -->
+    <node name="image_subscriber_node0" pkg="embodied_camera_demo" type="multi_usb_cam_subscriber.py" output="screen">
+        <param name="idx" value="$(arg idx)"/>    
+    </node>
+
+</launch>

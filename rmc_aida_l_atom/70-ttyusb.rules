@@ -1,0 +1,5 @@
+# KERNEL=="ttyUSB[0-9]*", MODE="0777"
+KERNELS=="1-4.2.2", MODE:="0777", GROUP:="dialout", SYMLINK:="rmUSB3"
+KERNELS=="1-4.4.4.2", MODE:="0777", GROUP:="dialout", SYMLINK:="rmUSB0"
+KERNELS=="1-4.4.4.3", MODE:="0777", GROUP:="dialout", SYMLINK:="rmUSB1"
+KERNELS=="1-4.4.4.4", MODE:="0777", GROUP:="dialout", SYMLINK:="rmUSB2"

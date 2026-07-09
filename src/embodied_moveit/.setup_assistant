@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: robot_description
+    relative_path: urdf/robots/embodied_dual_arms.urdf.xacro
+    xacro_args: arm_type:=rm65 end_effector:=rmg24
+  SRDF:
+    relative_path: config/robot_description.srdf
+  CONFIG:
+    author_name: jehan
+    author_email: jehan@realman-robot.com
+    generated_timestamp: 1746608346

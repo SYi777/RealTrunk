@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/inih/ini.h
+stdio.h
+-
+
+/home/rm/rmc_aida_l_atom/src/inih/ini.c
+stdio.h
+-
+ctype.h
+-
+string.h
+-
+inih/ini.h
+/home/rm/rmc_aida_l_atom/src/inih/inih/ini.h
+stddef.h
+-
+stdlib.h
+-
+

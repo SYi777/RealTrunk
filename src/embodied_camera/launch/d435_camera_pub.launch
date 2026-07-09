@@ -1,0 +1,8 @@
+
+<launch>
+    <rosparam file="$(find embodied_camera)/config/camera_params.yaml" command="load" ns="realsense_camera_node"/>
+    <!-- Start the RealSense camera node -->
+    <node name="realsense_camera_node" pkg="embodied_camera" type="multi_d435_publisher.py" output="screen">
+    </node>
+
+</launch>

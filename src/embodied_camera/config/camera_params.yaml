@@ -1,0 +1,17 @@
+usb_camera_frame_rate: 15
+d435_camera_frame_rate: 15
+usb_camera_resolution:
+  width: 640
+  height: 480
+d435_camera_resolution:
+  width: 640
+  height: 480
+d435_camera_serial_numbers:
+  left_d435: "344322073378"  # 左手d435相机的序列号
+  right_d435: "335522072637"  # 右手d435相机的序列号
+  head_d435:  "238722070556" # 头部d435相机的序列号
+
+
+
+
+

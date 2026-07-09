@@ -1,0 +1,3 @@
+/home/rm/rmc_aida_l_atom/build/CMakeFiles/rebuild_cache.dir
+/home/rm/rmc_aida_l_atom/build/CMakeFiles/edit_cache.dir
+/home/rm/rmc_aida_l_atom/build/CMakeFiles/atom.dir

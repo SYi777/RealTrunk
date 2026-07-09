@@ -1,0 +1,32 @@
+<launch>
+    <!-- 定义机械臂类型和末端执行器参数 -->
+    <arg name="arm_type" default="rm65" />
+    <arg name="end_effector" default="rmg24" />
+
+    <!-- 根据 arm_type 和 end_effector 选择 YAML 文件 -->
+    <arg name="config_file" 
+         default="$(find embodied_gazebo)/config/rm_trajectory_control_$(arg arm_type)_$(arg end_effector).yaml" />
+
+    <!-- 验证参数有效性 -->
+    <param name="config_file_error" 
+           if="$(eval arg('arm_type') not in ['rm65', 'rm75'] or arg('end_effector') not in ['rmg24', 'aoyi'])"
+           value="无效的 arm_type 或 end_effector" />
+
+    <!-- 加载选定的 YAML 配置文件 -->
+    <rosparam file="$(arg config_file)" command="load" 
+              unless="$(eval arg('arm_type') not in ['rm65', 'rm75'] or arg('end_effector') not in ['rmg24', 'aoyi'])" />
+
+    <!-- 定义控制器列表 -->
+    <arg name="controllers" 
+         if="$(eval arg('end_effector') == 'rmg24')"
+         value="l_arm r_arm l_gripper_controller r_gripper_controller" />
+    <arg name="controllers" 
+         unless="$(eval arg('end_effector') == 'rmg24')"
+         value="l_arm r_arm" />
+
+    <!-- 启动控制器 -->
+    <node name="arm_controller_spawner" pkg="controller_manager" 
+          type="spawner" respawn="false" output="screen" 
+          args="$(arg controllers)"
+          unless="$(eval arg('arm_type') not in ['rm65', 'rm75'] or arg('end_effector') not in ['rmg24', 'aoyi'])" />
+</launch>

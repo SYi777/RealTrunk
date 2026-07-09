@@ -1,0 +1,10 @@
+<launch>
+    <!-- 包含 dual_arm_75_driver.launch 文件 -->
+    <include file="$(find embodied_arm_driver)/launch/dual_arm_75_driver.launch" />
+
+    <!-- 运行 arm_demo_75.py 脚本 -->
+    <node name="embodied_arm_demo" 
+          pkg="embodied_arm_demo" 
+          type="arm_demo_75.py" 
+          output="screen" />
+</launch>

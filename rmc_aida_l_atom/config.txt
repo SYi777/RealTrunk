@@ -1,0 +1,7 @@
+arm_ip=169.254.128.18
+arm_port=8080
+arm_dof=6
+serial_name=/dev/ttyUSB0
+udp_port=9999
+follow_mode=1
+tag=right

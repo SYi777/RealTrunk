@@ -1,0 +1,59 @@
+#cmake最小需要版本
+cmake_minimum_required(VERSION 3.5)
+#项目名字
+project(aloha_bridge)
+
+# 设置 C 标准
+set(CMAKE_C_STANDARD 11)  # 设置 C 标准为 C11
+
+# 设置源文件
+set(SOURCES
+        src/io_control.cpp
+        src/woosh_robot_control.cpp
+)
+
+# 添加可执行文件
+add_executable(io_control ${SOURCES})
+
+# 定义库和头文件的路径
+set(ROBOTIC_ARM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Robotic_Arm")
+set(ROBOTIC_ARM_LIB_DIR "${ROBOTIC_ARM_DIR}/lib")
+set(ROBOTIC_ARM_INCLUDE_DIR "${ROBOTIC_ARM_DIR}/include")
+set(WOOSH_ROBOT_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(DEP_LIB
+        ${CMAKE_SOURCE_DIR}/lib/linux/libwoosh_robot.so
+        ${CMAKE_SOURCE_DIR}/lib/linux/libprotobuf.so.32
+        pthread)
+
+# 查找库
+find_library(RMAN_API_LIB NAMES api_cpp PATHS "${ROBOTIC_ARM_LIB_DIR}")
+
+if(NOT RMAN_API_LIB)
+    message(FATAL_ERROR "api_cpp library not found")
+else()
+    message(STATUS "RMAN_API_LIB: ${RMAN_API_LIB}")
+
+    # 链接库
+    target_link_libraries(io_control ${RMAN_API_LIB} ${DEP_LIB} -ljsoncpp)
+
+    # 包含目录
+    target_include_directories(io_control PUBLIC "${ROBOTIC_ARM_INCLUDE_DIR}" "${WOOSH_ROBOT_INCLUDE_DIR}")
+
+    # 如果是 Windows 平台，拷贝 DLL 文件到可执行文件的目录
+    if(WIN32)
+        add_custom_command(TARGET io_control POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${ROBOTIC_ARM_LIB_DIR}/api_cpp.dll"
+                $<TARGET_FILE_DIR:io_control>)
+    endif()
+
+    # 如果是 UNIX 平台
+    if(UNIX)
+        add_custom_command(TARGET io_control POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_SOURCE_DIR}/Robotic_Arm/lib/libapi_cpp.so"
+                $<TARGET_FILE_DIR:io_control>)
+    endif()
+
+endif()
+

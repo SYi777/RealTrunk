@@ -1,0 +1,12 @@
+<launch>
+
+    <arg name="idx" default="3"/>
+    
+    <include file="$(find embodied_camera)/launch/d435_camera_pub.launch" />
+    
+    <!-- Start the RealSense camera node -->
+    <node name="realsense_camera_node_sub" pkg="embodied_camera_demo" type="multi_d435_subscriber.py" output="screen" launch-prefix="bash -c 'sleep 5; $0 $@'">
+        <param name="camera_index" value="$(arg idx)"/>
+    </node>
+
+</launch>

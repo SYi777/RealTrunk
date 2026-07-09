@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find embodied_servo)/launch/servo_start.launch" />
+
+    <!-- Run the servo_control_demo.py script from this ROS package -->
+    <node pkg="embodied_servo_demo" type="servo_control_demo.py" name="servo_control_demo" output="screen">
+    </node>
+</launch>

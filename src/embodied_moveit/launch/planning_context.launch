@@ -1,0 +1,49 @@
+<launch>
+
+  <arg name="arm_type" default="rm65" />
+  <arg name="end_effector" default="rmg24" />
+  <arg name="real_arm" default="false" />
+
+  <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+  <arg name="load_robot_description" default="false"/>
+
+
+<!-- 调试输出 real_arm 的值 -->
+  <node pkg="rosout" type="rosout" name="print_real_arm" output="screen">
+    <param name="real_arm_value" value="$(arg real_arm)" />
+    <rosparam command="load" file="$(find embodied_moveit)/config/debug_print.yaml"/>
+  </node>
+
+
+  <!-- Dynamically select the joint_limits file -->
+  <arg name="joint_limits_file" 
+       value="$(find embodied_moveit)/config/joint_limits_$(arg arm_type)_$(arg end_effector).yaml" />
+
+
+  <!-- Dynamically generate the SRDF file path -->
+  <!-- <arg name="srdf_file" 
+       value="$(find embodied_moveit)/config/robot_description_$(arg arm_type)_$(arg end_effector).srdf" /> -->
+ 
+   <arg name="srdf_file" 
+       value="$(eval '$(find embodied_moveit)/config/robot_description_' + arg('arm_type') + '_' + arg('end_effector') + ('_real.srdf' if (arg('real_arm') and arg('end_effector') == 'rmg24')  else '.srdf'))" />
+ 
+  <!-- The name of the parameter under which the URDF is loaded -->
+  <arg name="robot_description" default="robot_description"/>
+
+  <!-- Load universal robot description format (URDF) -->
+  <param if="$(arg load_robot_description)" name="$(arg robot_description)" command="xacro arm_type:=$(arg arm_type) end_effector:=$(arg end_effector) '$(find robot_description)/urdf/robots/embodied_dual_arms.urdf.xacro'"/>
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="$(arg robot_description)_semantic" textfile="$(arg srdf_file)" />
+
+  <!-- Load updated joint limits (override information from URDF) -->
+  <group ns="$(arg robot_description)_planning">
+    <!-- <rosparam command="load" file="$(find embodied_moveit)/config/joint_limits.yaml"/> -->
+    <rosparam command="load" file="$(arg joint_limits_file)" />
+    <rosparam command="load" file="$(find embodied_moveit)/config/cartesian_limits.yaml"/>
+  </group>
+  <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
+    <group ns="$(arg robot_description)_kinematics">
+    <rosparam command="load" file="$(find embodied_moveit)/config/kinematics.yaml"/>
+  </group>
+
+</launch>

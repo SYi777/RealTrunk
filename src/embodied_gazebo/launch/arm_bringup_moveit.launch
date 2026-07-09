@@ -1,0 +1,27 @@
+<launch>
+    <arg name="arm_type" default="rm65" />
+    <arg name="end_effector" default="rmg24" />
+
+    <!-- Launch Gazebo  -->
+    <include file="$(find embodied_gazebo)/launch/arm_world.launch">
+        <arg name="arm_type" value="$(arg arm_type)" />
+        <arg name="end_effector" value="$(arg end_effector)" />
+
+    </include>
+
+    <!-- ros_control arm launch file -->
+    <include file="$(find embodied_gazebo)/launch/arm_gazebo_states.launch" />
+
+    <include file="$(find embodied_gazebo)/launch/arm_trajectory_controller.launch">
+        <arg name="arm_type" value="$(arg arm_type)" />
+        <arg name="end_effector" value="$(arg end_effector)" />
+    </include>
+
+
+    <!-- moveit launch file -->
+    <include file="$(find embodied_moveit)/launch/moveit_planning_execution_gazebo.launch">
+        <arg name="arm_type" value="$(arg arm_type)" />
+        <arg name="end_effector" value="$(arg end_effector)" />
+    </include>
+
+</launch>

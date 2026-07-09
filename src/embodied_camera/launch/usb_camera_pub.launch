@@ -1,0 +1,7 @@
+<launch>
+    <rosparam file="$(find embodied_camera)/config/camera_params.yaml" command="load" ns="usb_camera_node" />
+    <!-- <arg name="idx" default="2"/> -->
+    <node name="usb_camera_node" pkg="embodied_camera" type="multi_usb_cam_publisher.py" output="screen">
+           <!-- <param name="idx" value="$(arg idx)"/>     -->
+    </node>
+</launch>

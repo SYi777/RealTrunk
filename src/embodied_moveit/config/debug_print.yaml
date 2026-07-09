@@ -1,0 +1,2 @@
+debug_print:
+  real_arm: "$(param real_arm_value)"
